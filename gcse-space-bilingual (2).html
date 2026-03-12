@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCSE Space Physics 太空物理</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep-space: #030712;
+    --nebula-blue: #0f172a;
+    --star-white: #f0f4ff;
+    --cosmic-cyan: #22d3ee;
+    --nova-gold: #fbbf24;
+    --pulsar-purple: #a855f7;
+    --red-dwarf: #f87171;
+    --accent-green: #4ade80;
+    --card-bg: rgba(15, 23, 42, 0.85);
+    --border-glow: rgba(34, 211, 238, 0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--deep-space);
+    color: var(--star-white);
+    font-family: 'Noto Sans SC', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Starfield background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, white 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.7) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 45% 20%, white 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(2px 2px at 80% 30%, white 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 85%, rgba(255,255,255,0.8) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 60%, rgba(200,220,255,0.7) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 70% 50%, white 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 80%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 90%, rgba(200,220,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 5% 50%, white 0%, transparent 100%),
+      radial-gradient(2px 2px at 95% 10%, rgba(255,255,200,0.8) 0%, transparent 100%),
+      radial-gradient(1px 1px at 42% 78%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 73% 88%, white 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 88% 55%, rgba(200,220,255,0.7) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(34, 211, 238, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 60% 80%, rgba(251, 191, 36, 0.04) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    padding: 50px 20px 40px;
+    position: relative;
+  }
+
+  .header-badge {
+    display: inline-block;
+    background: rgba(34, 211, 238, 0.1);
+    border: 1px solid var(--cosmic-cyan);
+    color: var(--cosmic-cyan);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    padding: 5px 15px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--cosmic-cyan), var(--pulsar-purple), var(--nova-gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  .subtitle-cn {
+    font-size: 1.6rem;
+    color: rgba(240, 244, 255, 0.6);
+    font-weight: 300;
+    letter-spacing: 6px;
+    margin-bottom: 8px;
+  }
+
+  .subtitle-en {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    color: rgba(240, 244, 255, 0.4);
+    letter-spacing: 2px;
+  }
+
+  /* Nav tabs */
+  .nav-tabs {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 30px 0;
+  }
+
+  .tab-btn {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--border-glow);
+    color: rgba(240, 244, 255, 0.6);
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+
+  .tab-btn:hover, .tab-btn.active {
+    background: rgba(34, 211, 238, 0.15);
+    border-color: var(--cosmic-cyan);
+    color: var(--cosmic-cyan);
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.2);
+  }
+
+  .tab-btn .cn {
+    display: block;
+    font-size: 0.7rem;
+    opacity: 0.7;
+    margin-top: 2px;
+  }
+
+  /* Sections */
+  .section { display: none; animation: fadeIn 0.4s ease; }
+  .section.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Section title */
+  .section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.3rem;
+    color: var(--cosmic-cyan);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: var(--cosmic-cyan);
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  .section-cn {
+    color: rgba(240,244,255,0.5);
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+    padding-left: 14px;
+  }
+
+  /* Cards grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .concept-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-glow);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .concept-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 60%, rgba(34, 211, 238, 0.05));
+    pointer-events: none;
+  }
+
+  .concept-card:hover {
+    border-color: var(--cosmic-cyan);
+    box-shadow: 0 0 30px rgba(34, 211, 238, 0.15);
+    transform: translateY(-2px);
+  }
+
+  .concept-card.expanded {
+    border-color: var(--nova-gold);
+    box-shadow: 0 0 30px rgba(251, 191, 36, 0.15);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .card-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  .card-terms {
+    flex: 1;
+  }
+
+  .term-en {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.95rem;
+    color: var(--nova-gold);
+    font-weight: 700;
+  }
+
+  .term-cn {
+    font-size: 1.1rem;
+    color: var(--star-white);
+    margin-top: 3px;
+  }
+
+  .term-pinyin {
+    font-size: 0.75rem;
+    color: rgba(240,244,255,0.4);
+    font-style: italic;
+    margin-top: 1px;
+  }
+
+  .expand-arrow {
+    color: rgba(240,244,255,0.3);
+    font-size: 0.8rem;
+    transition: transform 0.3s;
+    margin-top: 5px;
+  }
+
+  .concept-card.expanded .expand-arrow { transform: rotate(180deg); }
+
+  .card-body {
+    display: none;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(34, 211, 238, 0.15);
+  }
+
+  .concept-card.expanded .card-body { display: block; }
+
+  .def-en {
+    font-size: 0.85rem;
+    color: rgba(240,244,255,0.8);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .def-cn {
+    font-size: 0.85rem;
+    color: rgba(34, 211, 238, 0.8);
+    line-height: 1.7;
+    background: rgba(34, 211, 238, 0.05);
+    padding: 8px 12px;
+    border-radius: 6px;
+    border-left: 2px solid var(--cosmic-cyan);
+  }
+
+  .key-fact {
+    margin-top: 10px;
+    font-size: 0.78rem;
+    color: var(--nova-gold);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* Stellar Evolution diagram */
+  .stellar-diagram {
+    background: var(--card-bg);
+    border: 1px solid var(--border-glow);
+    border-radius: 16px;
+    padding: 30px;
+    margin-top: 20px;
+    overflow-x: auto;
+  }
+
+  .diagram-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    color: var(--nova-gold);
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+  .diagram-title-cn {
+    text-align: center;
+    font-size: 0.85rem;
+    color: rgba(240,244,255,0.4);
+    margin-bottom: 25px;
+  }
+
+  .flow-diagram {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    min-width: 600px;
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+
+  .flow-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .flow-node:hover .node-circle { transform: scale(1.1); }
+
+  .node-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    border: 2px solid;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+  }
+
+  .node-circle:hover {
+    box-shadow: 0 0 20px currentColor;
+  }
+
+  .node-label { margin-top: 8px; }
+  .node-en { font-size: 0.65rem; font-family: 'Space Mono', monospace; color: rgba(240,244,255,0.7); }
+  .node-cn { font-size: 0.8rem; color: var(--star-white); }
+
+  .flow-arrow {
+    font-size: 1.2rem;
+    color: rgba(240,244,255,0.3);
+    padding: 0 5px;
+    flex-shrink: 0;
+  }
+
+  .flow-split {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+  }
+
+  .split-label {
+    font-size: 0.65rem;
+    color: rgba(240,244,255,0.4);
+    text-align: center;
+    font-style: italic;
+  }
+
+  /* Quiz section */
+  .quiz-container {
+    background: var(--card-bg);
+    border: 1px solid var(--border-glow);
+    border-radius: 16px;
+    padding: 30px;
+    margin-top: 20px;
+  }
+
+  .quiz-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    margin: 0 15px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cosmic-cyan), var(--pulsar-purple));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  .progress-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    color: rgba(240,244,255,0.5);
+  }
+
+  .score-display {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    color: var(--nova-gold);
+  }
+
+  .question-box {
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
+  .question-text {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: var(--star-white);
+    margin-bottom: 8px;
+  }
+
+  .question-cn {
+    font-size: 0.9rem;
+    color: rgba(34, 211, 238, 0.6);
+  }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .option-btn {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(240, 244, 255, 0.15);
+    color: var(--star-white);
+    padding: 14px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 0.85rem;
+    text-align: left;
+    transition: all 0.3s;
+    line-height: 1.5;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--cosmic-cyan);
+    background: rgba(34, 211, 238, 0.08);
+  }
+
+  .option-btn.correct {
+    border-color: var(--accent-green);
+    background: rgba(74, 222, 128, 0.1);
+    color: var(--accent-green);
+  }
+
+  .option-btn.wrong {
+    border-color: var(--red-dwarf);
+    background: rgba(248, 113, 113, 0.1);
+    color: var(--red-dwarf);
+  }
+
+  .option-cn {
+    display: block;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    margin-top: 3px;
+  }
+
+  .feedback-box {
+    padding: 15px 20px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    display: none;
+    margin-bottom: 15px;
+  }
+
+  .feedback-box.show { display: block; }
+  .feedback-box.correct { background: rgba(74,222,128,0.1); border: 1px solid var(--accent-green); color: var(--accent-green); }
+  .feedback-box.wrong { background: rgba(248,113,113,0.1); border: 1px solid var(--red-dwarf); color: var(--red-dwarf); }
+
+  .next-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--cosmic-cyan), var(--pulsar-purple));
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: none;
+  }
+
+  .next-btn.show { display: block; }
+  .next-btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 5px 20px rgba(34,211,238,0.3); }
+
+  .quiz-result {
+    text-align: center;
+    padding: 30px;
+    display: none;
+  }
+
+  .quiz-result.show { display: block; }
+
+  .result-score {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3rem;
+    background: linear-gradient(135deg, var(--nova-gold), var(--pulsar-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+  }
+
+  .result-msg { font-size: 1.1rem; margin-bottom: 5px; }
+  .result-cn { font-size: 0.9rem; color: rgba(240,244,255,0.5); margin-bottom: 25px; }
+
+  .restart-btn {
+    padding: 12px 30px;
+    background: transparent;
+    border: 1px solid var(--cosmic-cyan);
+    color: var(--cosmic-cyan);
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+  }
+
+  .restart-btn:hover { background: rgba(34,211,238,0.1); }
+
+  /* Glossary */
+  .glossary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  .glossary-table th {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--cosmic-cyan);
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(34,211,238,0.2);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .glossary-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    vertical-align: top;
+  }
+
+  .glossary-table tr:hover td { background: rgba(34,211,238,0.04); }
+
+  .gl-en { font-family: 'Space Mono', monospace; font-size: 0.85rem; color: var(--nova-gold); }
+  .gl-cn { font-size: 1rem; color: var(--star-white); margin: 2px 0; }
+  .gl-py { font-size: 0.75rem; color: rgba(240,244,255,0.4); font-style: italic; }
+  .gl-def { font-size: 0.82rem; color: rgba(240,244,255,0.7); line-height: 1.5; }
+  .gl-def-cn { font-size: 0.82rem; color: rgba(34,211,238,0.65); line-height: 1.6; }
+
+  /* Equations section */
+  .eq-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-glow);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 14px;
+  }
+
+  .eq-formula {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.3rem;
+    color: var(--nova-gold);
+    text-align: center;
+    padding: 15px;
+    background: rgba(251,191,36,0.05);
+    border-radius: 8px;
+    margin: 12px 0;
+    letter-spacing: 1px;
+  }
+
+  .eq-name { font-size: 1rem; color: var(--star-white); margin-bottom: 3px; }
+  .eq-name-cn { font-size: 0.85rem; color: rgba(240,244,255,0.5); margin-bottom: 12px; }
+  .eq-vars { font-size: 0.82rem; color: rgba(240,244,255,0.7); line-height: 1.8; }
+  .eq-vars span { color: var(--cosmic-cyan); font-family: 'Space Mono', monospace; }
+
+  .search-box {
+    width: 100%;
+    padding: 12px 20px;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--border-glow);
+    border-radius: 30px;
+    color: var(--star-white);
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    margin-bottom: 20px;
+    transition: border-color 0.3s;
+  }
+
+  .search-box:focus { border-color: var(--cosmic-cyan); }
+  .search-box::placeholder { color: rgba(240,244,255,0.3); }
+
+  @media (max-width: 600px) {
+    .options-grid { grid-template-columns: 1fr; }
+    .flow-diagram { min-width: 500px; }
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="header-badge">GCSE Physics · Year 11 · AQA</div>
+    <h1>SPACE PHYSICS</h1>
+    <div class="subtitle-cn">太空物理学</div>
+    <div class="subtitle-en">Interactive Bilingual Revision Resource · 互动双语复习资源</div>
+  </header>
+
+  <nav class="nav-tabs">
+    <button class="tab-btn active" onclick="showSection('concepts')">
+      Key Concepts
+      <span class="cn">核心概念</span>
+    </button>
+    <button class="tab-btn" onclick="showSection('stellar')">
+      Stellar Evolution
+      <span class="cn">恒星演化</span>
+    </button>
+    <button class="tab-btn" onclick="showSection('equations')">
+      Key Ideas
+      <span class="cn">核心要点</span>
+    </button>
+    <button class="tab-btn" onclick="showSection('glossary')">
+      Glossary
+      <span class="cn">词汇表</span>
+    </button>
+    <button class="tab-btn" onclick="showSection('quiz')">
+      Quiz
+      <span class="cn">测验</span>
+    </button>
+  </nav>
+
+  <!-- CONCEPTS SECTION -->
+  <div class="section active" id="section-concepts">
+    <div class="section-title">Key Concepts</div>
+    <div class="section-cn">核心概念 — Click each card to expand 点击卡片展开详情</div>
+
+    <div class="cards-grid">
+
+      <div class="concept-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon">☀️</div>
+          <div class="card-terms">
+            <div class="term-en">The Sun</div>
+            <div class="term-cn">太阳</div>
+            <div class="term-pinyin">tài yáng</div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+        <div class="card-body">
+          <div class="def-en">A medium-sized star at the centre of our Solar System. The Sun generates energy through <strong>nuclear fusion</strong>, fusing hydrogen nuclei into helium in its core.</div>
+          <div class="def-cn">太阳是太阳系中心的中等大小恒星，通过核聚变将氢原子核聚合成氦，释放巨大能量。</div>
+          <div class="key-fact">★ Surface temp: ~5,500°C · Core temp: ~15,000,000°C</div>
+        </div>
+      </div>
+
+      <div class="concept-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon">🔵</div>
+          <div class="card-terms">
+            <div class="term-en">Nuclear Fusion</div>
+            <div class="term-cn">核聚变</div>
+            <div class="term-pinyin">hé jù biàn</div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+        <div class="card-body">
+          <div class="def-en">The process where two small nuclei combine to form a larger nucleus, releasing <strong>large amounts of energy</strong>. This is how stars produce their energy. Requires extremely high temperature and pressure.</div>
+          <div class="def-cn">两个较小的原子核结合形成一个较大的原子核，同时释放大量能量。这是恒星产生能量的方式，需要极高的温度和压力。</div>
+          <div class="key-fact">★ 4H → He + energy (mass is converted to energy: E=mc²)</div>
+        </div>
+      </div>
+
+      <div class="concept-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon">🌌</div>
+          <div class="card-terms">
+            <div class="term-en">Galaxy</div>
+            <div class="term-cn">星系</div>
+            <div class="term-pinyin">xīng xì</div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+        <div class="card-body">
+          <div class="def-en">A collection of billions of stars, gas, and dust held together by gravity. Our galaxy is the <strong>Milky Way</strong>. The observable universe contains over 2 trillion galaxies.</div>
+          <div class="def-cn">由数十亿颗恒星、气体和尘埃组成的集合体，由引力维系在一起。我们的星系是银河系。可观测宇宙中有超过2万亿个星系。</div>
+          <div class="key-fact">★ Milky Way 银河系 diameter: ~100,000 light-years 光年</div>
+        </div>
+      </div>
+
+      <div class="concept-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon">🔴</div>
+          <div class="card-terms">
+            <div class="term-en">Red-Shift</div>
+            <div class="term-cn">红移</div>
+            <div class="term-pinyin">hóng yí</div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+        <div class="card-body">
+          <div class="def-en">When a light source moves <strong>away</strong> from an observer, the wavelength of light appears stretched — shifted towards the red end of the spectrum. Distant galaxies show red-shift, proving the universe is <strong>expanding</strong>.</div>
+          <div class="def-cn">当光源远离观测者时，光的波长看起来被拉伸，向光谱的红端移动。遥远星系的红移现象证明宇宙正在膨胀。</div>
+          <div class="key-fact">★ More distant galaxy → greater red-shift → faster recession speed</div>
+        </div>
+      </div>
+
+      <div class="concept-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon">💥</div>
+          <div class="card-terms">
+            <div class="term-en">The Big Bang</div>
+            <div class="term-cn">大爆炸</div>
+            <div class="term-pinyin">dà bào zhà</div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+        <div class="card-body">
+          <div class="def-en">The current scientific model for the origin of the universe. ~13.8 billion years ago, all matter, energy, space and time began from an extremely hot, dense point. Evidence: <strong>red-shift</strong> of galaxies and <strong>cosmic microwave background radiation (CMBR)</strong>.</div>
+          <div class="def-cn">宇宙起源的当前科学模型。约138亿年前，所有物质、能量、空间和时间从一个极热、极密的点开始。证据：星系的红移现象和宇宙微波背景辐射。</div>
+          <div class="key-fact">★ Evidence 证据: Red-shift 红移 + CMBR 宇宙微波背景辐射</div>
+        </div>
+      </div>
+
+      <div class="concept-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon">🪐</div>
+          <div class="card-terms">
+            <div class="term-en">Orbit</div>
+            <div class="term-cn">轨道</div>
+            <div class="term-pinyin">guǐ dào</div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+        <div class="card-body">
+          <div class="def-en">The curved path of an object around a star or planet, maintained by <strong>gravity</strong>. Planets orbit stars; moons orbit planets; satellites orbit Earth. Gravity is the force that keeps all orbiting objects on their curved path.</div>
+          <div class="def-cn">由引力维持的物体围绕恒星或行星的弯曲路径。行星围绕恒星运行，卫星围绕行星运行，人造卫星围绕地球运行。引力是使所有轨道天体保持弯曲路径的力。</div>
+          <div class="key-fact">★ Gravity keeps planets, moons and satellites in orbit 引力使行星、卫星保持轨道运行</div>
+        </div>
+      </div>
+
+      <div class="concept-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon">⚫</div>
+          <div class="card-terms">
+            <div class="term-en">Black Hole</div>
+            <div class="term-cn">黑洞</div>
+            <div class="term-pinyin">hēi dòng</div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+        <div class="card-body">
+          <div class="def-en">A region of space where gravity is so strong that <strong>nothing — not even light</strong> — can escape. Formed when a massive star collapses at the end of its life (after a supernova). Detected by their gravitational effects on nearby matter.</div>
+          <div class="def-cn">太空中引力极强的区域，连光也无法逃脱。由大质量恒星在生命末期（超新星爆发后）坍缩而形成。通过对附近物质的引力效应来探测黑洞。</div>
+          <div class="key-fact">★ Escape velocity > speed of light 逃逸速度 > 光速</div>
+        </div>
+      </div>
+
+      <div class="concept-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon">📡</div>
+          <div class="card-terms">
+            <div class="term-en">CMBR <span style="font-size:0.65rem; background:rgba(251,191,36,0.15); border:1px solid rgba(251,191,36,0.4); color:var(--nova-gold); padding:1px 6px; border-radius:8px; vertical-align:middle; font-family:sans-serif;">enrichment</span></div>
+            <div class="term-cn">宇宙微波背景辐射</div>
+            <div class="term-pinyin">yǔ zhòu wēi bō bèi jǐng fú shè</div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+        <div class="card-body">
+          <div style="font-size:0.75rem; color:var(--nova-gold); background:rgba(251,191,36,0.08); border:1px solid rgba(251,191,36,0.2); border-radius:6px; padding:6px 10px; margin-bottom:10px;">📌 Enrichment — not named in the AQA Foundation spec, but useful for understanding the Big Bang. CMBR不在AQA Foundation规范中单独命名，但有助于理解大爆炸。</div>
+          <div class="def-en"><strong>Cosmic Microwave Background Radiation</strong>: leftover thermal radiation from the Big Bang, now detected as faint microwave radiation coming from all directions in space.</div>
+          <div class="def-cn">宇宙微波背景辐射：大爆炸留下的热辐射，现在被探测为来自太空各个方向的微弱微波辐射。</div>
+          <div class="key-fact">★ Discovered 1964 by Penzias & Wilson — won Nobel Prize 诺贝尔奖</div>
+        </div>
+      </div>
+
+      <div class="concept-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon">🌑</div>
+          <div class="card-terms">
+            <div class="term-en">Dark Matter &amp; Dark Energy</div>
+            <div class="term-cn">暗物质与暗能量</div>
+            <div class="term-pinyin">àn wù zhì yǔ àn néng liàng</div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+        <div class="card-body">
+          <div class="def-en"><strong>Dark matter</strong> is invisible matter that does not emit light but exerts a gravitational force — it appears to hold galaxies together. <strong>Dark energy</strong> is a mysterious force driving the ever-faster expansion of the universe. Both are still not fully understood.</div>
+          <div class="def-cn">暗物质是不发光但有引力效应的不可见物质，它似乎将星系聚合在一起。暗能量是一种推动宇宙以越来越快的速度膨胀的神秘力量。两者目前仍未被完全理解。</div>
+          <div class="key-fact">★ AQA spec point: "there is still much about the universe that is not understood" 宇宙中仍有许多未解之谜</div>
+        </div>
+      </div>
+
+      <div class="concept-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <div class="card-icon">💫</div>
+          <div class="card-terms">
+            <div class="term-en">Nebula</div>
+            <div class="term-cn">星云</div>
+            <div class="term-pinyin">xīng yún</div>
+          </div>
+          <div class="expand-arrow">▼</div>
+        </div>
+        <div class="card-body">
+          <div class="def-en">A large cloud of gas (mainly hydrogen) and dust in space. Stars form when a nebula collapses under gravity — a process called <strong>accretion</strong>. The collapsed core heats up, eventually triggering nuclear fusion to form a <strong>protostar</strong>.</div>
+          <div class="def-cn">太空中由气体（主要是氢气）和尘埃组成的大云团。恒星在星云因引力坍缩时形成——这个过程称为吸积。坍缩的核心加热，最终触发核聚变，形成原恒星。</div>
+          <div class="key-fact">★ Nebula 星云 → Protostar 原恒星 → Main Sequence Star 主序星</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STELLAR EVOLUTION -->
+  <div class="section" id="section-stellar">
+    <div class="section-title">Stellar Evolution</div>
+    <div class="section-cn">恒星演化 — The life cycle of stars 恒星的生命周期</div>
+
+    <div class="stellar-diagram">
+      <div class="diagram-title">Life Cycle of Stars — 恒星生命周期</div>
+      <div class="diagram-title-cn">Hover over each stage for details · 将鼠标悬停在每个阶段查看详情</div>
+
+      <div style="overflow-x:auto; padding-bottom: 10px;">
+        <div class="flow-diagram" id="flowDiagram">
+
+          <div class="flow-node" onclick="showStarInfo('nebula')">
+            <div class="node-circle" style="background: rgba(168,85,247,0.15); border-color: #a855f7; color: #a855f7;">💫</div>
+            <div class="node-label">
+              <div class="node-en">Nebula</div>
+              <div class="node-cn">星云</div>
+            </div>
+          </div>
+
+          <div class="flow-arrow">→</div>
+
+          <div class="flow-node" onclick="showStarInfo('protostar')">
+            <div class="node-circle" style="background: rgba(251,191,36,0.1); border-color: #fbbf24; color: #fbbf24;">🌟</div>
+            <div class="node-label">
+              <div class="node-en">Protostar</div>
+              <div class="node-cn">原恒星</div>
+            </div>
+          </div>
+
+          <div class="flow-arrow">→</div>
+
+          <div class="flow-node" onclick="showStarInfo('mainseq')">
+            <div class="node-circle" style="background: rgba(255,255,100,0.1); border-color: #facc15; color: #facc15;">☀️</div>
+            <div class="node-label">
+              <div class="node-en">Main Sequence</div>
+              <div class="node-cn">主序星</div>
+            </div>
+          </div>
+
+          <div class="flow-arrow">→</div>
+
+          <div class="flow-split">
+            <div style="display:flex; flex-direction:column; align-items:center; gap: 20px;">
+
+              <div style="display:flex; align-items:center; gap: 5px;">
+                <div class="split-label">Small star<br/>小恒星</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node" onclick="showStarInfo('redgiant')">
+                  <div class="node-circle" style="background:rgba(239,68,68,0.1); border-color:#ef4444; color:#ef4444;">🔴</div>
+                  <div class="node-label">
+                    <div class="node-en">Red Giant</div>
+                    <div class="node-cn">红巨星</div>
+                  </div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node" onclick="showStarInfo('whitedwarf')">
+                  <div class="node-circle" style="background:rgba(240,244,255,0.1); border-color:rgba(240,244,255,0.5); color:rgba(240,244,255,0.8);">⚪</div>
+                  <div class="node-label">
+                    <div class="node-en">White Dwarf</div>
+                    <div class="node-cn">白矮星</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:flex; align-items:center; gap: 5px;">
+                <div class="split-label">Massive star<br/>大质量恒星</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node" onclick="showStarInfo('redsupergiant')">
+                  <div class="node-circle" style="background:rgba(220,38,38,0.15); border-color:#dc2626; color:#dc2626;">🔴</div>
+                  <div class="node-label">
+                    <div class="node-en">Red Supergiant</div>
+                    <div class="node-cn">红超巨星</div>
+                  </div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node" onclick="showStarInfo('supernova')">
+                  <div class="node-circle" style="background:rgba(251,191,36,0.2); border-color:#fbbf24; color:#fbbf24;">💥</div>
+                  <div class="node-label">
+                    <div class="node-en">Supernova</div>
+                    <div class="node-cn">超新星</div>
+                  </div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-split" style="gap:10px;">
+                  <div class="flow-node" onclick="showStarInfo('neutron')">
+                    <div class="node-circle" style="background:rgba(34,211,238,0.1); border-color:#22d3ee; color:#22d3ee; width:55px; height:55px; font-size:1.1rem;">💠</div>
+                    <div class="node-label">
+                      <div class="node-en" style="font-size:0.58rem;">Neutron Star</div>
+                      <div class="node-cn" style="font-size:0.72rem;">中子星</div>
+                    </div>
+                  </div>
+                  <div class="flow-node" onclick="showStarInfo('blackhole')">
+                    <div class="node-circle" style="background:rgba(0,0,0,0.5); border-color:#6b7280; color:#9ca3af; width:55px; height:55px; font-size:1.1rem;">⚫</div>
+                    <div class="node-label">
+                      <div class="node-en" style="font-size:0.58rem;">Black Hole</div>
+                      <div class="node-cn" style="font-size:0.72rem;">黑洞</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="starInfoBox" style="display:none; margin-top:25px; padding:18px; background:rgba(34,211,238,0.06); border-radius:10px; border:1px solid rgba(34,211,238,0.2);">
+        <div id="starInfoContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY IDEAS -->
+  <div class="section" id="section-equations">
+    <div class="section-title">Key Ideas to Describe</div>
+    <div class="section-cn">核心要点 — AQA Foundation: no equations needed for Space. You must be able to <em>describe</em> these ideas. 无需公式，只需描述这些概念。</div>
+
+    <div style="background:rgba(74,222,128,0.07); border:1px solid rgba(74,222,128,0.25); border-radius:10px; padding:12px 18px; margin-bottom:20px; font-size:0.82rem; color:rgba(240,244,255,0.65); line-height:1.6;">
+      ✅ <strong style="color:var(--accent-green)">AQA Foundation Space Physics</strong> — This topic is entirely <strong style="color:white">descriptive</strong>. There are no equations to recall. Focus on being able to explain the ideas below in your own words. 本章节完全是描述性的，没有需要记忆的公式。重点是能够用自己的语言解释以下概念。
+    </div>
+
+    <div class="eq-card">
+      <div class="eq-name">⚖️ &nbsp;How Stars Stay Stable 恒星如何保持稳定</div>
+      <div class="eq-name-cn">AQA 4.8.1.1 — The balance inside a main sequence star</div>
+      <div style="margin-top:14px;">
+        <div style="display:flex; gap:12px; align-items:stretch; flex-wrap:wrap;">
+          <div style="flex:1; min-width:180px; background:rgba(248,113,113,0.08); border:1px solid rgba(248,113,113,0.3); border-radius:8px; padding:12px; font-size:0.82rem; line-height:1.6;">
+            <div style="color:var(--red-dwarf); font-family:'Space Mono',monospace; font-size:0.75rem; margin-bottom:5px;">INWARD FORCE 向内的力</div>
+            Gravity pulls all the gas inward, trying to collapse the star.<br>
+            <span style="color:rgba(248,113,113,0.7)">引力将所有气体向内拉，试图使恒星坍缩。</span>
+          </div>
+          <div style="display:flex; align-items:center; font-size:1.4rem; color:var(--nova-gold); padding:0 4px;">⇌</div>
+          <div style="flex:1; min-width:180px; background:rgba(34,211,238,0.08); border:1px solid rgba(34,211,238,0.3); border-radius:8px; padding:12px; font-size:0.82rem; line-height:1.6;">
+            <div style="color:var(--cosmic-cyan); font-family:'Space Mono',monospace; font-size:0.75rem; margin-bottom:5px;">OUTWARD PRESSURE 向外的压力</div>
+            Nuclear fusion in the core releases energy, creating outward pressure.<br>
+            <span style="color:rgba(34,211,238,0.7)">核心的核聚变释放能量，产生向外的压力。</span>
+          </div>
+        </div>
+        <div style="margin-top:10px; font-size:0.8rem; color:var(--nova-gold);">★ When these two forces are balanced, the star is stable — this is the <strong>main sequence</strong> stage. 当两种力平衡时，恒星处于稳定状态——即主序星阶段。</div>
+      </div>
+    </div>
+
+    <div class="eq-card">
+      <div class="eq-name">🌌 &nbsp;Red-Shift and the Expanding Universe 红移与宇宙膨胀</div>
+      <div class="eq-name-cn">AQA 4.8.2 — What red-shift tells us</div>
+      <div style="margin-top:14px; font-size:0.85rem; line-height:1.7; color:rgba(240,244,255,0.8);">
+        You need to be able to describe and explain these three linked ideas:<br><br>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="background:rgba(168,85,247,0.08); border-left:3px solid var(--pulsar-purple); padding:10px 14px; border-radius:0 6px 6px 0;">
+            <strong style="color:var(--pulsar-purple);">1.</strong> Light from distant galaxies is <strong>red-shifted</strong> — its wavelength is increased (stretched towards the red end of the spectrum).<br>
+            <span style="font-size:0.78rem; color:rgba(168,85,247,0.7);">来自遥远星系的光发生红移——波长增加（向光谱红端拉伸）。</span>
+          </div>
+          <div style="background:rgba(168,85,247,0.08); border-left:3px solid var(--pulsar-purple); padding:10px 14px; border-radius:0 6px 6px 0;">
+            <strong style="color:var(--pulsar-purple);">2.</strong> The <strong>further away</strong> a galaxy is, the <strong>greater</strong> its red-shift — meaning it is moving away faster.<br>
+            <span style="font-size:0.78rem; color:rgba(168,85,247,0.7);">星系越遥远，红移越大——意味着它移动得越快。</span>
+          </div>
+          <div style="background:rgba(168,85,247,0.08); border-left:3px solid var(--pulsar-purple); padding:10px 14px; border-radius:0 6px 6px 0;">
+            <strong style="color:var(--pulsar-purple);">3.</strong> This is evidence that <strong>space itself is expanding</strong> and supports the <strong>Big Bang theory</strong>.<br>
+            <span style="font-size:0.78rem; color:rgba(168,85,247,0.7);">这证明宇宙空间本身在膨胀，支持大爆炸理论。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-card">
+      <div class="eq-name">💥 &nbsp;The Big Bang Theory 大爆炸理论</div>
+      <div class="eq-name-cn">AQA 4.8.2 — Origin of the universe</div>
+      <div style="margin-top:14px; font-size:0.85rem; line-height:1.7; color:rgba(240,244,255,0.8);">
+        The Big Bang theory states that the universe began from a <strong>very small, extremely hot and dense</strong> region. Since then, space has been expanding.<br>
+        <span style="font-size:0.8rem; color:rgba(34,211,238,0.7);">大爆炸理论指出宇宙从一个极小、极热、极密的区域开始，此后空间一直在膨胀。</span>
+        <div style="margin-top:12px; background:rgba(251,191,36,0.07); border:1px solid rgba(251,191,36,0.25); border-radius:8px; padding:12px;">
+          <div style="color:var(--nova-gold); font-family:'Space Mono',monospace; font-size:0.75rem; margin-bottom:8px;">KEY EVIDENCE 关键证据</div>
+          <div style="font-size:0.82rem; line-height:1.8;">
+            🔴 <strong>Red-shift</strong> of distant galaxies shows the universe is expanding.<br>
+            <span style="font-size:0.78rem; color:rgba(240,244,255,0.5); padding-left:20px; display:block;">遥远星系的红移表明宇宙正在膨胀。</span>
+            📡 <strong>Since 1998</strong>, observations of supernovae show distant galaxies are receding <em>ever faster</em>.<br>
+            <span style="font-size:0.78rem; color:rgba(240,244,255,0.5); padding-left:20px; display:block;">自1998年起，超新星观测表明遥远星系退行速度越来越快。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-card">
+      <div class="eq-name">🔭 &nbsp;Orbits and Gravity 轨道与引力</div>
+      <div class="eq-name-cn">AQA 4.8.1.3 — Natural and artificial satellites</div>
+      <div style="margin-top:14px; font-size:0.85rem; line-height:1.7; color:rgba(240,244,255,0.8);">
+        <strong>Gravity</strong> provides the force that keeps planets, moons and satellites in their orbits.<br>
+        <span style="font-size:0.8rem; color:rgba(34,211,238,0.7);">引力提供使行星、卫星保持轨道运行的力。</span>
+        <div style="margin-top:12px; display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <div style="background:rgba(34,211,238,0.06); border:1px solid rgba(34,211,238,0.2); border-radius:8px; padding:10px; font-size:0.8rem;">
+            <div style="color:var(--cosmic-cyan); margin-bottom:4px;">🌍 Natural Satellites 天然卫星</div>
+            Moons orbiting planets (e.g. our Moon orbits Earth).<br>
+            <span style="color:rgba(240,244,255,0.45)">围绕行星运行的卫星（如月球围绕地球）。</span>
+          </div>
+          <div style="background:rgba(34,211,238,0.06); border:1px solid rgba(34,211,238,0.2); border-radius:8px; padding:10px; font-size:0.8rem;">
+            <div style="color:var(--cosmic-cyan); margin-bottom:4px;">🛰️ Artificial Satellites 人造卫星</div>
+            Man-made objects orbiting Earth (e.g. GPS, weather satellites).<br>
+            <span style="color:rgba(240,244,255,0.45)">围绕地球运行的人造物体（如GPS、气象卫星）。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-card">
+      <div class="eq-name">⭐ &nbsp;Elements Made in Stars 恒星中产生的元素</div>
+      <div class="eq-name-cn">AQA 4.8.1.2 — Fusion and element formation</div>
+      <div style="margin-top:14px; font-size:0.85rem; line-height:1.7; color:rgba(240,244,255,0.8);">
+        <strong>Fusion processes</strong> in stars produce all naturally occurring elements up to iron. Elements <strong>heavier than iron</strong> (e.g. gold, uranium) are only produced during a <strong>supernova</strong>.<br>
+        <span style="font-size:0.8rem; color:rgba(34,211,238,0.7);">恒星中的核聚变产生铁以内的所有自然存在的元素。比铁更重的元素（如金、铀）只在超新星爆发时产生。</span>
+        <div style="margin-top:10px; font-size:0.8rem; color:var(--nova-gold);">★ When a supernova explodes, it scatters these elements throughout the universe — this is why heavy elements exist on Earth! 超新星爆炸将这些元素散布到整个宇宙——这就是地球上存在重元素的原因！</div>
+      </div>
+    </div>
+
+    <div class="eq-card" style="border-color: rgba(107,114,128,0.4);">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+        <div class="eq-name" style="margin:0;">🌑 &nbsp;Dark Matter &amp; Dark Energy 暗物质与暗能量</div>
+        <span style="background:rgba(107,114,128,0.2); border:1px solid rgba(107,114,128,0.4); color:#9ca3af; font-size:0.68rem; font-family:'Space Mono',monospace; padding:2px 8px; border-radius:10px; white-space:nowrap;">AQA SPEC POINT</span>
+      </div>
+      <div class="eq-name-cn" style="margin-bottom:12px;">AQA 4.8.2 — What we don't yet understand 我们尚未理解的事物</div>
+      <div style="font-size:0.85rem; line-height:1.7; color:rgba(240,244,255,0.8);">
+        The AQA spec states that there is <strong>still much about the universe that is not understood</strong>. Two key mysteries are:<br><br>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="background:rgba(107,114,128,0.1); border-left:3px solid #6b7280; padding:10px 14px; border-radius:0 6px 6px 0;">
+            <strong style="color:#d1d5db;">Dark Matter 暗物质</strong> — An invisible form of matter that <strong>does not emit light</strong> but has a gravitational effect. It appears to hold galaxies together and bend light around them, but we cannot directly detect it.<br>
+            <span style="font-size:0.78rem; color:rgba(255,255,255,0.4);">一种不发光但有引力效应的不可见物质。它似乎将星系聚合在一起并使光线弯曲，但我们无法直接探测到它。</span>
+          </div>
+          <div style="background:rgba(107,114,128,0.1); border-left:3px solid #6b7280; padding:10px 14px; border-radius:0 6px 6px 0;">
+            <strong style="color:#d1d5db;">Dark Energy 暗能量</strong> — A mysterious force that appears to be causing the universe to expand at an <strong>ever-increasing rate</strong>. Observations of distant supernovae since 1998 suggest this acceleration is real, but its cause is unknown.<br>
+            <span style="font-size:0.78rem; color:rgba(255,255,255,0.4);">一种神秘的力，似乎导致宇宙以越来越快的速度膨胀。自1998年以来对遥远超新星的观测表明这种加速是真实的，但其原因尚不清楚。</span>
+          </div>
+        </div>
+        <div style="margin-top:10px; font-size:0.8rem; color:#9ca3af; font-style:italic;">Together, dark matter and dark energy are estimated to make up ~95% of the universe — yet we have no direct evidence of what they are. 暗物质和暗能量估计占宇宙的约95%，但我们还没有关于它们本质的直接证据。</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- GLOSSARY -->
+  <div class="section" id="section-glossary">
+    <div class="section-title">Full Glossary</div>
+    <div class="section-cn">完整词汇表 — Search in English or Chinese 用英文或中文搜索</div>
+
+    <input type="text" class="search-box" id="glossarySearch" placeholder="Search / 搜索..." oninput="filterGlossary()">
+
+    <table class="glossary-table" id="glossaryTable">
+      <thead>
+        <tr>
+          <th>English Term</th>
+          <th>中文 / Pinyin</th>
+          <th>Definition 定义</th>
+        </tr>
+      </thead>
+      <tbody id="glossaryBody">
+      </tbody>
+    </table>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="section" id="section-quiz">
+    <div class="section-title">Revision Quiz</div>
+    <div class="section-cn">复习测验 — Test your knowledge! 测试你的知识！</div>
+
+    <div class="quiz-container">
+      <div id="quizActive">
+        <div class="quiz-progress">
+          <div class="progress-text" id="qProgress">Q1 / 10</div>
+          <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+          <div class="score-display" id="scoreDisplay">Score 分数: 0</div>
+        </div>
+
+        <div class="question-box">
+          <div class="question-text" id="questionText"></div>
+          <div class="question-cn" id="questionCN"></div>
+        </div>
+
+        <div class="options-grid" id="optionsGrid"></div>
+
+        <div class="feedback-box" id="feedbackBox"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question → 下一题</button>
+      </div>
+
+      <div class="quiz-result" id="quizResult">
+        <div class="result-score" id="resultScore"></div>
+        <div class="result-msg" id="resultMsg"></div>
+        <div class="result-cn" id="resultCN"></div>
+        <button class="restart-btn" onclick="restartQuiz()">Restart Quiz 重新开始</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ===== NAVIGATION =====
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ===== CARDS =====
+function toggleCard(card) {
+  card.classList.toggle('expanded');
+}
+
+// ===== STELLAR INFO =====
+const starData = {
+  nebula: { en: "Nebula", cn: "星云", info: "A large cloud of gas (mainly hydrogen) and dust in space. Gravity causes the nebula to collapse inward — this is how all stars begin their lives.", info_cn: "太空中由气体（主要是氢气）和尘埃组成的大云团。引力使星云向内坍缩——所有恒星的生命都是这样开始的。" },
+  protostar: { en: "Protostar", cn: "原恒星", info: "Formed as the nebula collapses. The core heats up due to compression. A protostar is not yet fusing hydrogen — it is still contracting. When core temperature reaches ~10 million °C, fusion begins.", info_cn: "星云坍缩时形成原恒星。由于压缩，核心温度升高。原恒星尚未进行氢聚变，仍在收缩。当核心温度达到约1000万°C时，聚变开始。" },
+  mainseq: { en: "Main Sequence Star", cn: "主序星", info: "A stable star where the outward pressure from nuclear fusion (hydrogen → helium) balances the inward gravitational force. Our Sun is a main sequence star and has been for ~4.6 billion years. Stars spend most of their lives at this stage.", info_cn: "稳定的恒星，核聚变（氢→氦）产生的向外压力与向内的引力平衡。我们的太阳是一颗主序星，已经存在了约46亿年。恒星一生中大部分时间处于这个阶段。" },
+  redgiant: { en: "Red Giant", cn: "红巨星", info: "When a small/medium star runs out of hydrogen fuel in its core, it expands enormously and cools, becoming a red giant. The outer layers expand while the core contracts and heats up, fusing helium.", info_cn: "当小型/中等恒星核心的氢燃料耗尽时，它会膨胀并冷却，变成红巨星。外层膨胀，而核心收缩并加热，进行氦聚变。" },
+  whitedwarf: { en: "White Dwarf", cn: "白矮星", info: "After a red giant sheds its outer layers (forming a planetary nebula), the dense hot core remains as a white dwarf. It no longer undergoes fusion — it gradually cools over billions of years. About the size of Earth but very dense.", info_cn: "红巨星脱落外层（形成行星状星云）后，致密的热核心作为白矮星留下。它不再进行聚变——在数十亿年内逐渐冷却。大小约与地球相当，但密度非常高。" },
+  redsupergiant: { en: "Red Supergiant", cn: "红超巨星", info: "Massive stars (more than ~8 times the mass of the Sun) expand into red supergiants. Much larger and more luminous than red giants. They fuse progressively heavier elements: helium, carbon, oxygen... up to iron.", info_cn: "大质量恒星（质量超过太阳约8倍）膨胀成红超巨星。比红巨星大得多，也更亮。它们依次聚变更重的元素：氦、碳、氧……直到铁。" },
+  supernova: { en: "Supernova", cn: "超新星", info: "A massive star ends its life in a spectacular explosion — a supernova. The outer layers are ejected at high speed into space, and new elements (heavier than iron) are formed and scattered. This is why heavy elements like gold exist on Earth!", info_cn: "大质量恒星以壮观的爆炸结束生命——超新星爆发。外层以高速向太空喷射，形成并散布新元素（比铁更重的元素）。这就是为什么地球上存在黄金等重元素的原因！" },
+  neutron: { en: "Neutron Star", cn: "中子星", info: "After a supernova, if the remaining core is between ~1.4 and ~3 solar masses, it collapses into an incredibly dense neutron star — mostly made of neutrons, about 20km across but containing more mass than the Sun.", info_cn: "超新星爆发后，如果剩余核心质量在约1.4到3个太阳质量之间，它就会坍缩成极致密的中子星——主要由中子组成，直径约20公里，但质量超过太阳。" },
+  blackhole: { en: "Black Hole", cn: "黑洞", info: "If the remaining core after a supernova is greater than ~3 solar masses, gravity is so strong that nothing — not even light — can escape. The region from which nothing can escape is bounded by the event horizon (事件视界).", info_cn: "如果超新星爆发后剩余核心质量超过约3个太阳质量，引力会强到连光也无法逃脱。无法逃脱的区域由事件视界（事件视界）界定。" }
+};
+
+function showStarInfo(key) {
+  const d = starData[key];
+  const box = document.getElementById('starInfoBox');
+  document.getElementById('starInfoContent').innerHTML = `
+    <div style="font-family:'Space Mono',monospace; color:var(--nova-gold); font-size:0.85rem; margin-bottom:3px;">${d.en}</div>
+    <div style="font-size:1.1rem; color:var(--star-white); margin-bottom:10px;">${d.cn}</div>
+    <div style="font-size:0.85rem; color:rgba(240,244,255,0.8); line-height:1.6; margin-bottom:10px;">${d.info}</div>
+    <div style="font-size:0.85rem; color:rgba(34,211,238,0.75); line-height:1.7; background:rgba(34,211,238,0.05); padding:10px 14px; border-radius:6px; border-left:2px solid var(--cosmic-cyan);">${d.info_cn}</div>
+  `;
+  box.style.display = 'block';
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ===== GLOSSARY =====
+const glossaryData = [
+  { en: "Universe", cn: "宇宙", py: "yǔ zhòu", def: "All existing matter, energy, space and time — everything that exists.", def_cn: "所有存在的物质、能量、空间和时间——一切存在的事物。" },
+  { en: "Solar System", cn: "太阳系", py: "tài yáng xì", def: "The Sun and all objects orbiting it, including 8 planets, moons, asteroids, and comets.", def_cn: "太阳及其所有轨道天体，包括8颗行星、卫星、小行星和彗星。" },
+  { en: "Star", cn: "恒星", py: "héng xīng", def: "A luminous sphere of plasma held together by gravity, producing energy via nuclear fusion.", def_cn: "由引力束缚在一起的发光等离子体球体，通过核聚变产生能量。" },
+  { en: "Planet", cn: "行星", py: "xíng xīng", def: "A large body orbiting a star that has cleared its orbital neighbourhood of other debris.", def_cn: "围绕恒星运行的大型天体，已清除轨道附近的其他碎片。" },
+  { en: "Moon", cn: "卫星/月球", py: "wèi xīng / yuè qiú", def: "A natural satellite orbiting a planet.", def_cn: "围绕行星运行的天然卫星。" },
+  { en: "Galaxy", cn: "星系", py: "xīng xì", def: "Billions of stars, gas, and dust held together by gravity.", def_cn: "由引力维系在一起的数十亿颗恒星、气体和尘埃。" },
+  { en: "Milky Way", cn: "银河系", py: "yín hé xì", def: "The galaxy that contains our Solar System.", def_cn: "包含我们太阳系的星系。" },
+  { en: "Light Year", cn: "光年", py: "guāng nián", def: "The distance light travels in one year (~9.46 × 10¹⁵ m). Used to measure distances in space.", def_cn: "光在一年内传播的距离（约9.46×10¹⁵米）。用于测量太空距离。" },
+  { en: "Gravity", cn: "引力/重力", py: "yǐn lì / zhòng lì", def: "A fundamental attractive force between all objects with mass. Responsible for orbits, tides, and the structure of stars.", def_cn: "所有有质量物体之间的基本吸引力。负责轨道、潮汐和恒星的结构。" },
+  { en: "Nuclear Fusion", cn: "核聚变", py: "hé jù biàn", def: "Two small nuclei join to form a larger one, releasing large amounts of energy.", def_cn: "两个较小的原子核结合形成一个较大的原子核，释放大量能量。" },
+  { en: "Red-Shift", cn: "红移", py: "hóng yí", def: "The increase in wavelength of light from a source moving away from the observer.", def_cn: "光源远离观测者时光波长的增加。" },
+  { en: "Big Bang", cn: "大爆炸", py: "dà bào zhà", def: "The current model for the origin of the universe ~13.8 billion years ago.", def_cn: "约138亿年前宇宙起源的当前模型。" },
+  { en: "CMBR", cn: "宇宙微波背景辐射", py: "yǔ zhòu wēi bō bèi jǐng fú shè", def: "Cosmic Microwave Background Radiation — leftover radiation from the Big Bang.", def_cn: "宇宙微波背景辐射——大爆炸留下的辐射。" },
+  { en: "Nebula", cn: "星云", py: "xīng yún", def: "A large cloud of gas and dust in space where stars are born.", def_cn: "太空中恒星诞生的大气体和尘埃云团。" },
+  { en: "Main Sequence", cn: "主序星", py: "zhǔ xù xīng", def: "The stable phase of a star's life when hydrogen fusion balances gravity.", def_cn: "恒星生命中稳定阶段，氢聚变与引力平衡。" },
+  { en: "Red Giant", cn: "红巨星", py: "hóng jù xīng", def: "A large cool star formed when a main sequence star exhausts its hydrogen.", def_cn: "主序星耗尽氢后形成的大型冷却恒星。" },
+  { en: "White Dwarf", cn: "白矮星", py: "bái ǎi xīng", def: "The dense remnant of a small/medium star after it has shed its outer layers.", def_cn: "小型/中等恒星脱落外层后的致密残骸。" },
+  { en: "Supernova", cn: "超新星", py: "chāo xīn xīng", def: "A catastrophic explosion at the end of a massive star's life.", def_cn: "大质量恒星生命末期的灾难性爆炸。" },
+  { en: "Neutron Star", cn: "中子星", py: "zhōng zǐ xīng", def: "An incredibly dense stellar remnant composed mainly of neutrons.", def_cn: "主要由中子组成的极致密恒星残骸。" },
+  { en: "Black Hole", cn: "黑洞", py: "hēi dòng", def: "A region of space where gravity is so strong that nothing, not even light, can escape.", def_cn: "太空中引力极强的区域，连光也无法逃脱。" },
+  { en: "Orbit", cn: "轨道", py: "guǐ dào", def: "The curved path of one object around another due to gravity.", def_cn: "一个物体因引力绕另一个物体的弯曲路径。" },
+  { en: "Satellite", cn: "卫星", py: "wèi xīng", def: "An object (natural or artificial) that orbits a larger body.", def_cn: "围绕较大天体运行的物体（天然或人造的）。" },
+  { en: "Wavelength", cn: "波长", py: "bō cháng", def: "The distance between two consecutive peaks or troughs of a wave.", def_cn: "波的两个相邻波峰或波谷之间的距离。" },
+  { en: "Electromagnetic Spectrum", cn: "电磁波谱", py: "diàn cí bō pǔ", def: "The full range of electromagnetic waves from radio waves to gamma rays.", def_cn: "从无线电波到伽马射线的全部电磁波范围。" },
+];
+
+function populateGlossary(data) {
+  const tbody = document.getElementById('glossaryBody');
+  tbody.innerHTML = data.map(item => `
+    <tr>
+      <td><div class="gl-en">${item.en}</div></td>
+      <td>
+        <div class="gl-cn">${item.cn}</div>
+        <div class="gl-py">${item.py}</div>
+      </td>
+      <td>
+        <div class="gl-def">${item.def}</div>
+        <div class="gl-def-cn">${item.def_cn}</div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterGlossary() {
+  const q = document.getElementById('glossarySearch').value.toLowerCase();
+  const filtered = glossaryData.filter(item =>
+    item.en.toLowerCase().includes(q) ||
+    item.cn.includes(q) ||
+    item.py.toLowerCase().includes(q) ||
+    item.def.toLowerCase().includes(q)
+  );
+  populateGlossary(filtered);
+}
+
+populateGlossary(glossaryData);
+
+// ===== QUIZ =====
+const quizQuestions = [
+  { q: "What process produces energy inside stars?", q_cn: "恒星内部是通过什么过程产生能量的？", options: [{ t: "Nuclear Fission 核裂变", c: false }, { t: "Nuclear Fusion 核聚变", c: true }, { t: "Combustion 燃烧", c: false }, { t: "Radioactive decay 放射性衰变", c: false }], fb: "Nuclear FUSION — small nuclei join to form larger ones, releasing huge amounts of energy.", fb_cn: "核聚变——小原子核结合形成较大的原子核，释放大量能量。" },
+  { q: "What is red-shift evidence for?", q_cn: "红移现象是什么的证据？", options: [{ t: "The universe is contracting 宇宙在收缩", c: false }, { t: "The universe is expanding 宇宙在膨胀", c: true }, { t: "Stars are cooling down 恒星正在冷却", c: false }, { t: "Galaxies are slowing down 星系在减速", c: false }], fb: "Red-shift shows galaxies are moving away from us — the further they are, the greater the red-shift. This proves the universe is expanding.", fb_cn: "红移表明星系正在远离我们——距离越远，红移越大。这证明宇宙正在膨胀。" },
+  { q: "What does a massive star become after a supernova?", q_cn: "大质量恒星超新星爆发后会变成什么？", options: [{ t: "White dwarf 白矮星", c: false }, { t: "Red giant 红巨星", c: false }, { t: "Neutron star or black hole 中子星或黑洞", c: true }, { t: "Nebula 星云", c: false }], fb: "After a supernova, the core either becomes a neutron star (if ~1.4–3 solar masses) or a black hole (if greater than ~3 solar masses).", fb_cn: "超新星爆发后，核心要么变成中子星（质量约为1.4-3个太阳质量），要么变成黑洞（质量大于约3个太阳质量）。" },
+  { q: "What does AQA say about dark matter and dark energy?", q_cn: "AQA对暗物质和暗能量有什么说法？", options: [{ t: "They are fully understood by scientists 科学家完全理解它们", c: false }, { t: "They are the same thing 它们是同一事物", c: false }, { t: "There is still much about the universe that is not understood 宇宙中仍有许多未解之谜", c: true }, { t: "They do not exist 它们不存在", c: false }], fb: "AQA specifically states that 'there is still much about the universe that is not understood, for example dark matter and dark energy.' You should be able to recall this.", fb_cn: "AQA明确指出：宇宙中仍有许多未解之谜，例如暗物质和暗能量。你应该能够记住这一点。" },
+  { q: "Stars are born from:", q_cn: "恒星诞生于：", options: [{ t: "Black holes 黑洞", c: false }, { t: "Supernovae 超新星", c: false }, { t: "Nebulae (clouds of gas and dust) 星云（气体和尘埃云）", c: true }, { t: "White dwarfs 白矮星", c: false }], fb: "Stars form from nebulae — clouds of gas (mainly hydrogen) and dust. Gravity causes the nebula to collapse inward, forming a protostar.", fb_cn: "恒星从星云形成——气体（主要是氢气）和尘埃的云团。引力使星云向内坍缩，形成原恒星。" },
+  { q: "What happens to the wavelength of light from a galaxy moving AWAY from us?", q_cn: "当星系远离我们时，我们接收到的光的波长会发生什么变化？", options: [{ t: "It decreases (blue-shift) 减小（蓝移）", c: false }, { t: "It increases (red-shift) 增大（红移）", c: true }, { t: "It stays the same 保持不变", c: false }, { t: "It becomes invisible 变得不可见", c: false }], fb: "When a source moves away, wavelengths are stretched — we see red-shift (longer wavelengths, towards the red end of the spectrum).", fb_cn: "当光源远离时，波长被拉伸——我们看到红移（波长更长，朝向光谱的红端）。" },
+  { q: "Our Sun is currently in which stage of its life cycle?", q_cn: "我们的太阳目前处于生命周期的哪个阶段？", options: [{ t: "Protostar 原恒星", c: false }, { t: "Red Giant 红巨星", c: false }, { t: "Main Sequence 主序星", c: true }, { t: "White Dwarf 白矮星", c: false }], fb: "The Sun is a main sequence star — hydrogen fusion balances gravity. It has been in this stage for ~4.6 billion years and will remain here for another ~5 billion years.", fb_cn: "太阳是一颗主序星——氢聚变与引力平衡。它已处于这个阶段约46亿年，还将在此阶段保持约50亿年。" },
+  { q: "What provides the centripetal force for a planet's orbit?", q_cn: "什么为行星的轨道提供向心力？", options: [{ t: "Magnetic force 磁力", c: false }, { t: "Nuclear force 核力", c: false }, { t: "Gravity 引力", c: true }, { t: "Friction 摩擦力", c: false }], fb: "Gravity acts as the centripetal force keeping planets in orbit. The gravitational attraction between the planet and star constantly pulls the planet toward the centre of the orbit.", fb_cn: "引力作为向心力使行星保持在轨道上。行星与恒星之间的引力不断将行星拉向轨道中心。" },
+  { q: "Which is the PRIMARY evidence for the Big Bang theory in the AQA spec?", q_cn: "AQA规范中大爆炸理论的主要证据是什么？", options: [{ t: "The existence of black holes 黑洞的存在", c: false }, { t: "Red-shift of distant galaxies 遥远星系的红移", c: true }, { t: "Nuclear fusion in stars 恒星中的核聚变", c: false }, { t: "The formation of nebulae 星云的形成", c: false }], fb: "Red-shift is the key evidence AQA focuses on at Foundation: galaxies are moving away, the further they are the faster they recede, showing space itself is expanding — supporting the Big Bang.", fb_cn: "红移是AQA Foundation重点关注的关键证据：星系正在远离我们，越远的星系退行越快，表明宇宙空间本身在膨胀——支持大爆炸理论。" },
+  { q: "A white dwarf is formed from:", q_cn: "白矮星由以下哪种恒星形成？", options: [{ t: "A massive star after a supernova 超新星爆发后的大质量恒星", c: false }, { t: "A small/medium star after the red giant phase 红巨星阶段后的小型/中等恒星", c: true }, { t: "Two neutron stars colliding 两颗中子星碰撞", c: false }, { t: "A nebula collapsing directly 星云直接坍缩", c: false }], fb: "Small/medium stars (like our Sun) become red giants, then shed their outer layers to leave behind a white dwarf — the hot, dense core remnant.", fb_cn: "小型/中等恒星（如我们的太阳）变成红巨星，然后脱落外层，留下白矮星——炽热致密的核心残骸。" },
+];
+
+let currentQ = 0;
+let score = 0;
+let answered = false;
+
+function loadQuestion() {
+  const q = quizQuestions[currentQ];
+  document.getElementById('qProgress').textContent = `Q${currentQ + 1} / ${quizQuestions.length}`;
+  document.getElementById('progressFill').style.width = `${((currentQ + 1) / quizQuestions.length) * 100}%`;
+  document.getElementById('questionText').textContent = q.q;
+  document.getElementById('questionCN').textContent = q.q_cn;
+  document.getElementById('feedbackBox').className = 'feedback-box';
+  document.getElementById('feedbackBox').innerHTML = '';
+  document.getElementById('nextBtn').className = 'next-btn';
+  answered = false;
+
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML = q.options.map((opt, i) => `
+    <button class="option-btn" onclick="selectAnswer(this, ${opt.c}, ${i})">
+      ${opt.t}
+    </button>
+  `).join('');
+}
+
+function selectAnswer(btn, correct, idx) {
+  if (answered) return;
+  answered = true;
+
+  const q = quizQuestions[currentQ];
+  document.querySelectorAll('.option-btn').forEach((b, i) => {
+    b.disabled = true;
+    if (quizQuestions[currentQ].options[i].c) b.classList.add('correct');
+  });
+
+  if (correct) {
+    score++;
+    btn.classList.add('correct');
+    document.getElementById('scoreDisplay').textContent = `Score 分数: ${score}`;
+    const fb = document.getElementById('feedbackBox');
+    fb.className = 'feedback-box correct show';
+    fb.innerHTML = `✓ Correct! 正确！<br><small>${q.fb}</small><br><small style="color:rgba(74,222,128,0.7)">${q.fb_cn}</small>`;
+  } else {
+    btn.classList.add('wrong');
+    const fb = document.getElementById('feedbackBox');
+    fb.className = 'feedback-box wrong show';
+    fb.innerHTML = `✗ Not quite. 不太对。<br><small>${q.fb}</small><br><small style="color:rgba(248,113,113,0.7)">${q.fb_cn}</small>`;
+  }
+
+  document.getElementById('nextBtn').className = 'next-btn show';
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= quizQuestions.length) {
+    showResult();
+  } else {
+    loadQuestion();
+  }
+}
+
+function showResult() {
+  document.getElementById('quizActive').style.display = 'none';
+  const result = document.getElementById('quizResult');
+  result.className = 'quiz-result show';
+
+  const pct = Math.round((score / quizQuestions.length) * 100);
+  document.getElementById('resultScore').textContent = `${score} / ${quizQuestions.length}`;
+
+  let msg, cn;
+  if (pct >= 80) { msg = "Excellent work! 🌟 Outstanding!"; cn = "太棒了！成绩优秀！"; }
+  else if (pct >= 60) { msg = "Good effort! Keep revising. 👍"; cn = "很好！继续复习。"; }
+  else { msg = "Keep practising — you'll get there! 💪"; cn = "继续练习——你会成功的！"; }
+
+  document.getElementById('resultMsg').textContent = msg;
+  document.getElementById('resultCN').textContent = cn;
+}
+
+function restartQuiz() {
+  currentQ = 0;
+  score = 0;
+  document.getElementById('scoreDisplay').textContent = 'Score 分数: 0';
+  document.getElementById('quizActive').style.display = 'block';
+  document.getElementById('quizResult').className = 'quiz-result';
+  loadQuestion();
+}
+
+// Init quiz
+loadQuestion();
+</script>
+</body>
+</html>
